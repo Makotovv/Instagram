@@ -19,6 +19,28 @@ class LoginViewController: UIViewController {
     
     //ログインボタン
     @IBAction func handleLoginButton(_ sender: Any) {
+        if let address = mailAddressTextField.text, let password = passwordTextField.text {
+            
+            // アドレスとパスワード名のいずれかでも入力されていない時は何もしない
+            if address.isEmpty || password.isEmpty {
+                return
+            }
+            
+            Auth.auth().signIn(withEmail: address, password: password) { user, error in
+                if let error = error {
+                    print("DEBUG_PRINT: " + error.localizedDescription)
+                    return
+                } else {
+                    print("DEBUG_PRINT: ログインに成功しました。")
+                    
+                    // 画面を閉じてViewControllerに戻る
+                    self.dismiss(animated: true, completion: nil)
+                }
+            }
+        }
+    }
+    //アカウント作成ボタン
+    @IBAction func handleCreateAccountButton(_ sender: Any) {
         
         if let address = mailAddressTextField.text, let password = passwordTextField.text, let displayName = displayNameTextField.text {
             
@@ -57,10 +79,6 @@ class LoginViewController: UIViewController {
             }
         }
     }
-    //アカウント作成ボタン
-    @IBAction func handleCreateAccountButton(_ sender: Any) {
-    }
-    
     
     override func viewDidLoad() {
         super.viewDidLoad()
